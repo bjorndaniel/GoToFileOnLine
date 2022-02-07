@@ -16,13 +16,15 @@
                         d:DesignWidth="400">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="13"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Type a serch phrase followed by :(LineNumber)"></TextBlock>
-        <TextBox x:Name="SearchBox" Grid.Row="1" HorizontalAlignment="Left" Width="400" KeyUp="TextBox_KeyUp" />
-        <Border Grid.Row="2" Width="398" BorderBrush="Black" HorizontalAlignment="Left"
+        <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Type a serch phrase followed by :LINENUMBER"></TextBlock>
+        <TextBlock Grid.Row="1" FontSize="10" Text="Press Esc to close"></TextBlock>
+        <TextBox x:Name="SearchBox" Grid.Row="2" HorizontalAlignment="Left" Width="400" KeyUp="TextBox_KeyUp" />
+        <Border Grid.Row="3" Width="398" BorderBrush="Black" HorizontalAlignment="Left"
         BorderThickness="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Name="ResultStack"></StackPanel>
