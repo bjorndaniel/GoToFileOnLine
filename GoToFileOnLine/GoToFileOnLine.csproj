@@ -61,6 +61,7 @@
     <Compile Include="ToolWindows\GoToFileOnLineControl.xaml.cs">
       <DependentUpon>GoToFileOnLineControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\FuzzySearch.cs" />
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

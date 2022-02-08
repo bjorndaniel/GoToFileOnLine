@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="2027e58d-53a3-4dce-8e55-bf02942c94d6" Version="0.1" Language="en-US" Publisher="Daniel Sandberg" />
+        <Identity Id="2027e58d-53a3-4dce-8e55-bf02942c94d6" Version="0.2" Language="en-US" Publisher="Daniel Sandberg" />
         <DisplayName>Go to File on LIne</DisplayName>
         <Description xml:space="preserve">A combination of Go To File and Go To Line. Search for a file and add :LINENUMBER to open the file and mark the lineI</Description>
         <Icon>logo.png</Icon>

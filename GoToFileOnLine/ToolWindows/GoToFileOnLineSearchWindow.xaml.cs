@@ -1,6 +1,7 @@
 ﻿using EnvDTE;
 using EnvDTE80;
 using GoToFileOnLine.Models;
+using GoToFileOnLine.Utilities;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -167,7 +169,7 @@ namespace GoToFileOnLine
         {
             var border = (ResultStack.Parent as ScrollViewer).Parent as Border;
             var query = (sender as TextBox).Text;
-            query = query.Contains(":") ? query.Split(':').First() : query;
+            query = query.Contains(":") ? query.Split(':').First().Trim() : query;
             if (query.Length == 0)
             {
                 // Clear
@@ -182,9 +184,19 @@ namespace GoToFileOnLine
 
             // Clear the list
             ResultStack.Children.Clear();
-            var results = ProjectItems.Where(_ => _.Name?.ToLower().Contains(query?.Trim().ToLower()) ?? false).ToList();
+            var results = ProjectItems.Select(_ =>
+            {
+                var (score, positions) = FuzzySearch.ScoreFuzzy(_?.Name ?? "", query, query.ToLower());
+                return new ComboBoxItemModel
+                {
+                    FullPath = _.FullPath,
+                    Name = _.Name,
+                    Score = score,
+                    Positions = positions
+                };
+            });
             var counter = 0;
-            foreach (var item in results)
+            foreach (var item in results.Where(_ => _.Score > 0).OrderByDescending(_ => _.Score))
             {
                 item.Index = counter;
                 AddItem(item);
@@ -193,16 +205,6 @@ namespace GoToFileOnLine
                 {
                     break;
                 }
-            }
-
-            if (ResultStack.Children.Count == 0)
-            {
-                ResultStack.Children.Add(new TextBlock() { Text = "No results found." });
-            }
-            else if (ResultStack.Children.Count == 1)
-            {
-                _selectedItem = ((TextBlock)ResultStack.Children[0]).Tag as ComboBoxItemModel;
-                SetColors((TextBlock)ResultStack.Children[_selectedItem.Index]);
             }
         }
 
@@ -218,7 +220,20 @@ namespace GoToFileOnLine
             var block = new TextBlock();
             block.Foreground = _defaultTextColor;
             // Add the text
-            block.Text = p.Name ?? string.Empty;
+            if (p.Positions.Any())
+            {
+                for (int i = 0; i < p.Name.Length; i++)
+                {
+                    if (p.Positions.Contains(i))
+                    {
+                        block.Inlines.Add(new Run(p.Name[i].ToString()) { FontWeight = FontWeights.Bold });
+                    }
+                    else
+                    {
+                        block.Inlines.Add(p.Name[i].ToString());
+                    }
+                }
+            }
             block.Tag = p;
 
             // A little style...
