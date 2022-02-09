@@ -1,2 +1,2 @@
-# gotofileon
-A Visual Studio 2022 extension
+# Go To File On Line
+A Visual Studio 2022 extension that combines Go To All and Go To Line
