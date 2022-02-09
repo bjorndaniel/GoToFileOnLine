@@ -22,7 +22,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Go to file on line</ButtonText>
-          <LocCanonicalName>.GoToFileOnLine.MyCommand</LocCanonicalName>
+          <LocCanonicalName>.GoToFileOnLine.ShowSearchWindowCommand</LocCanonicalName>
         </Strings>
       </Button>
     </Buttons>

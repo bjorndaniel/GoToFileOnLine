@@ -196,6 +196,14 @@ namespace GoToFileOnLine
                 };
             });
             var counter = 0;
+            var fullMatch = results.FirstOrDefault(_ => _.Positions.Count() == query.Length && _.Positions.Count() == _.Name.Length);
+            if (fullMatch != null)
+            {
+                fullMatch.Index = counter;
+                AddItem(fullMatch, true);
+                return;
+
+            }
             foreach (var item in results.Where(_ => _.Score > 0).OrderByDescending(_ => _.Score))
             {
                 item.Index = counter;
@@ -215,7 +223,7 @@ namespace GoToFileOnLine
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD101:Avoid unsupported async delegates", Justification = "<Pending>")]
-        private void AddItem(ComboBoxItemModel p)
+        private void AddItem(ComboBoxItemModel p, bool select = false)
         {
             var block = new TextBlock();
             block.Foreground = _defaultTextColor;
@@ -259,7 +267,12 @@ namespace GoToFileOnLine
                 b.Background = Brushes.Transparent;
                 _selectedItem = null;
             };
-
+            if (select)
+            {
+                _selectedItem = p;
+                block.Background = Brushes.DarkGray;
+                block.Foreground = Brushes.Black;
+            }
             ResultStack.Children.Add(block);
         }
 
