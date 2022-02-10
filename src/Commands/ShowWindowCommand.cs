@@ -1,4 +1,5 @@
 ﻿using EnvDTE;
+using System.Windows;
 
 namespace GoToFileOnLine
 {
@@ -8,7 +9,7 @@ namespace GoToFileOnLine
 
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
-            var searchWindow = new GoToFileOnLineSearchWindow();
+            var searchWindow = new GoToFileOnLineSearchWindow { Owner = Application.Current.MainWindow };
             var done = searchWindow.ShowDialog();
         }
     }

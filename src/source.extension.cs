@@ -11,7 +11,7 @@ namespace GoToFileOnLine
         public const string Name = "Go to File on Line";
         public const string Description = @"A combination of Go To File and Go To Line. Search for a file and add :LINENUMBER to open the file and mark the lineI";
         public const string Language = "en-US";
-        public const string Version = "0.2";
+        public const string Version = "1.0";
         public const string Author = "Daniel Sandberg";
         public const string Tags = "";
     }

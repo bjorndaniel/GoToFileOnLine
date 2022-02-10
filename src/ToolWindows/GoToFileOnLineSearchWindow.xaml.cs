@@ -282,6 +282,7 @@ namespace GoToFileOnLine
             {
                 var lineText = SearchBox.Text.Contains(":") ? SearchBox.Text.Split(':').Last() : "1";
                 int.TryParse(lineText, out var lineNumber);
+
                 var path = cb.FullPath;
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 var provider = (Microsoft.VisualStudio.OLE.Interop.IServiceProvider)Package.GetGlobalService(typeof(DTE));
@@ -296,7 +297,15 @@ namespace GoToFileOnLine
                     viewAdapter.CenterLines(lineNumber > 10 ? lineNumber - 10 : lineNumber, 20);
                     viewAdapter.SetCaretPos(lineNumber - 1, 0);
                     var lines = File.ReadAllLines(path);
-                    if (lines.Count() > lineNumber)
+                    if (lineText?.ToLower() == "e")
+                    {
+                        viewAdapter.SetSelection(lines.Count() -1, 0, lines.Count()-1, lines[lines.Count()-1].Length);
+                    }
+                    else if (lineText?.ToLower() == "s")
+                    {
+                        viewAdapter.SetSelection(0, 0, 0, lines[0].Length);
+                    }
+                    else if (lines.Count() > lineNumber)
                     {
                         viewAdapter.SetSelection(lineNumber - 1, 0, lineNumber - 1, lines[lineNumber - 1].Length);
                     }

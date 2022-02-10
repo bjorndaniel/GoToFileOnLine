@@ -21,10 +21,14 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Type a search phrase followed by :LINENUMBER"></TextBlock>
-        <TextBlock Grid.Row="1" FontSize="10" Text="Press Esc to close"></TextBlock>
-        <TextBox x:Name="SearchBox" Grid.Row="2" HorizontalAlignment="Left" Width="400" KeyUp="TextBox_KeyUp" />
-        <Border Grid.Row="3" Width="398" BorderBrush="Black" HorizontalAlignment="Left"
+        <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Type a search phrase followed by :LINENUMBER">
+             <TextBlock.ToolTip>
+                    <ToolTip Content="LINENUMBER can a be number, s for start of file or e for end of file"></ToolTip>
+                </TextBlock.ToolTip>
+        </TextBlock>
+        <TextBlock Grid.Row="1" FontSize="10" Text="Press Esc to close, arrow keys to navigate and enter to select (or use the mouse) "></TextBlock>
+        <TextBox x:Name="SearchBox" Grid.Row="2" HorizontalAlignment="Left" Width="367" KeyUp="TextBox_KeyUp" />
+        <Border Grid.Row="3" Width="367" BorderBrush="Black" HorizontalAlignment="Left"
         BorderThickness="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Name="ResultStack"></StackPanel>
