@@ -9,5 +9,6 @@ namespace GoToFileOnLine.Models
         public int Index { get; set; }
         public int Score { get; set; }
         public List<int> Positions { get; set; } = new List<int>();
+        public string ProjectName { get; set; } = string.Empty;
     }
 }

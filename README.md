@@ -17,3 +17,4 @@ Using the mouse or arrow keys a search result can be selected. This file will th
 ### 1.0
 
 Initial release
+

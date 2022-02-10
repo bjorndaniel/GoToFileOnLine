@@ -70,6 +70,7 @@ namespace GoToFileOnLine
                     {
                         Name = item.Name!,
                         FullPath = item.Properties?.Item("FullPath")?.Value.ToString(),
+                        ProjectName = item.ContainingProject?.Name,
                     };
 
                     if (!string.IsNullOrWhiteSpace(cb.FullPath))
@@ -192,7 +193,8 @@ namespace GoToFileOnLine
                     FullPath = _.FullPath,
                     Name = _.Name,
                     Score = score,
-                    Positions = positions
+                    Positions = positions,
+                    ProjectName = _.ProjectName,
                 };
             });
             var counter = 0;
@@ -223,26 +225,30 @@ namespace GoToFileOnLine
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD101:Avoid unsupported async delegates", Justification = "<Pending>")]
-        private void AddItem(ComboBoxItemModel p, bool select = false)
+        private void AddItem(ComboBoxItemModel item, bool select = false)
         {
-            var block = new TextBlock();
+            var block = new TextBlock
+            {
+                TextWrapping = TextWrapping.NoWrap,
+                TextTrimming = TextTrimming.CharacterEllipsis
+            };
             block.Foreground = _defaultTextColor;
             // Add the text
-            if (p.Positions.Any())
+
+            for (int i = 0; i < item.Name.Length; i++)
             {
-                for (int i = 0; i < p.Name.Length; i++)
+                if (item.Positions?.Contains(i) ?? false)
                 {
-                    if (p.Positions.Contains(i))
-                    {
-                        block.Inlines.Add(new Run(p.Name[i].ToString()) { FontWeight = FontWeights.Bold });
-                    }
-                    else
-                    {
-                        block.Inlines.Add(p.Name[i].ToString());
-                    }
+                    block.Inlines.Add(new Run(item.Name[i].ToString()) { FontWeight = FontWeights.Bold });
+                }
+                else
+                {
+                    block.Inlines.Add(item.Name[i].ToString());
                 }
             }
-            block.Tag = p;
+            block.Inlines.Add($" (project {item.ProjectName})");
+
+            block.Tag = item;
 
             // A little style...
             block.Margin = new Thickness(2, 3, 2, 3);
@@ -256,20 +262,32 @@ namespace GoToFileOnLine
 
             block.MouseEnter += (sender, e) =>
             {
+                foreach (var item in ResultStack.Children)
+                {
+                    ((TextBlock)item).Background = Brushes.Transparent;
+                    ((TextBlock)item).Foreground = _defaultTextColor;
+                }
                 var b = sender as TextBlock;
                 b.Background = Brushes.DarkGray;
+                block.Foreground = Brushes.Black;
                 _selectedItem = b.Tag as ComboBoxItemModel;
             };
 
             block.MouseLeave += (sender, e) =>
             {
+                foreach (var item in ResultStack.Children)
+                {
+                    ((TextBlock)item).Background = Brushes.Transparent;
+                    ((TextBlock)item).Foreground = _defaultTextColor;
+                }
                 var b = sender as TextBlock;
                 b.Background = Brushes.Transparent;
+                b.Background = _defaultTextColor;
                 _selectedItem = null;
             };
             if (select)
             {
-                _selectedItem = p;
+                _selectedItem = item;
                 block.Background = Brushes.DarkGray;
                 block.Foreground = Brushes.Black;
             }
@@ -299,7 +317,7 @@ namespace GoToFileOnLine
                     var lines = File.ReadAllLines(path);
                     if (lineText?.ToLower() == "e")
                     {
-                        viewAdapter.SetSelection(lines.Count() -1, 0, lines.Count()-1, lines[lines.Count()-1].Length);
+                        viewAdapter.SetSelection(lines.Count() - 1, 0, lines.Count() - 1, lines[lines.Count() - 1].Length);
                     }
                     else if (lineText?.ToLower() == "s")
                     {
