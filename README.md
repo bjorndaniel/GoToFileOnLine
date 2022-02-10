@@ -1,6 +1,7 @@
 # Go to file on line
 
 A combination of Go to all and Go to line.
+Available on the [VS Market place](https://marketplace.visualstudio.com/items?itemName=BdSoftware.GoToFileOnLine2022) 
 
 ## Features
 
