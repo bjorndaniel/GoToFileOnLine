@@ -209,7 +209,7 @@ namespace GoToFileOnLine
             foreach (var item in results.Where(_ => _.Score > 0).OrderByDescending(_ => _.Score))
             {
                 item.Index = counter;
-                AddItem(item);
+                AddItem(item, counter == 0);
                 counter++;
                 if (counter > 10)
                 {
