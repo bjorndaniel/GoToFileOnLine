@@ -15,6 +15,10 @@ Using the mouse or arrow keys a search result can be selected. This file will th
 
 ## Release Notes
 
+### 1.1
+
+Added a fix for selecting first item in list when typing in search
+
 ### 1.0
 
 Initial release
